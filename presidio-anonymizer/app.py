@@ -2,6 +2,7 @@
 
 import logging
 import os
+import json
 from logging.config import fileConfig
 from pathlib import Path
 
@@ -95,6 +96,20 @@ class Server:
         def deanonymizers():
             """Return a list of supported deanonymizers."""
             return jsonify(self.deanonymize.get_deanonymizers())
+
+######################
+        @self.app.route("/genz-preview", methods=["GET"])
+        def genz_preview():
+            """Return an example Gen-Z anonymization preview."""
+            response = {
+                "example": "Call Emily at 577-988-1234",
+                "example output": "Call GOAT at vibe check",
+                "description": "Example output of the genz anonymizer."
+            }
+            return jsonify(response), 200
+            #responseb = json.dumps(responsea)
+            #return Response(responseb, mimetype='application/json')
+######################
 
         @self.app.errorhandler(InvalidParamError)
         def invalid_param(err):
