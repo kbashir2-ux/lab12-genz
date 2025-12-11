@@ -7,7 +7,7 @@ from pathlib import Path
 
 from flask import Flask, Response, jsonify, request
 from presidio_anonymizer import AnonymizerEngine, DeanonymizeEngine
-from presidio_anonymizer.entities import InvalidParamError
+from presidio_anonymizer.entities import InvalidParamError, OperatorConfig
 from presidio_anonymizer.services.app_entities_convertor import AppEntitiesConvertor
 from werkzeug.exceptions import BadRequest, HTTPException
 
@@ -96,6 +96,41 @@ class Server:
             """Return a list of supported deanonymizers."""
             return jsonify(self.deanonymize.get_deanonymizers())
 
+#genz-pre
+        @self.app.route("/genz-preview", methods=["GET"])
+        def genz_preview():
+            """Return an example Gen-Z anonymization preview."""
+            response = {
+                "example": "Call Emily at 577-988-1234",
+                "example output": "Call GOAT at vibe check",
+                "description": "Example output of the genz anonymizer."
+            }
+            return jsonify(response), 200
+#genz-pre end
+#genz
+        @self.app.route("/genz", methods=["POST"])
+        def genz() -> Response:
+            """Anonymize text using the Gen-Z anonymizer."""
+            content = request.get_json()
+            if not content:
+                raise BadRequest("Invalid request json!!!!!")
+
+            text = content.get("text", "")
+            analyzer_results = AppEntitiesConvertor.analyzer_results_from_json(
+                content.get("analyzer_results")
+            )
+            operators = {
+                result.entity_type: OperatorConfig("genz")
+                for result in analyzer_results
+            }
+            genz_result = self.anonymizer.anonymize(
+                text=text,
+                analyzer_results=analyzer_results,
+                operators=operators,
+            )
+
+            return Response(genz_result.to_json(), mimetype="application/json")
+#genz end
         @self.app.errorhandler(InvalidParamError)
         def invalid_param(err):
             self.logger.warning(
