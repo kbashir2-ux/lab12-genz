@@ -6,11 +6,10 @@ from logging.config import fileConfig
 from pathlib import Path
 
 from flask import Flask, Response, jsonify, request
-from werkzeug.exceptions import BadRequest, HTTPException
-
 from presidio_anonymizer import AnonymizerEngine, DeanonymizeEngine
 from presidio_anonymizer.entities import InvalidParamError, OperatorConfig
 from presidio_anonymizer.services.app_entities_convertor import AppEntitiesConvertor
+from werkzeug.exceptions import BadRequest, HTTPException
 
 DEFAULT_PORT = "3000"
 
