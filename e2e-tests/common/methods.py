@@ -26,6 +26,14 @@ def anonymizers():
     )
     return response.status_code, response.content
 
+def genz_anonymize(data):
+    """
+    Calls the Gen-Z anonymizer endpoint
+    """
+    response = requests.post(
+        f"{ANONYMIZER_BASE_URL}/genz", data=data, headers=DEFAULT_HEADERS
+    )
+    return response.status_code, response.content
 
 
 def deanonymize(data):
