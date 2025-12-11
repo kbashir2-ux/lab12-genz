@@ -3,7 +3,7 @@ import json
 import pytest
 
 from common.assertions import equal_json_strings
-from common.methods import anonymize, anonymizers, deanonymize, genz_anonymize
+from common.methods import anonymize, anonymizers, deanonymize, genz
 
 
 @pytest.mark.api
@@ -425,7 +425,7 @@ def test_given_anonymize_called_with_genz_then_expected_valid_response_returned(
     }
     """
 
-    response_status, response_content = genz_anonymize(request_body)
+    response_status, response_content = genz(request_body)
 
     response_json = json.loads(response_content)
 
