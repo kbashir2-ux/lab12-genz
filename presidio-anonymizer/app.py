@@ -8,9 +8,8 @@ from pathlib import Path
 
 from flask import Flask, Response, jsonify, request
 from presidio_anonymizer import AnonymizerEngine, DeanonymizeEngine
-from presidio_anonymizer.entities import InvalidParamError
+from presidio_anonymizer.entities import InvalidParamError, OperatorConfig
 from presidio_anonymizer.services.app_entities_convertor import AppEntitiesConvertor
-#from presidio_anonymizer.entities import OperatorConfig
 from werkzeug.exceptions import BadRequest, HTTPException
 
 DEFAULT_PORT = "3000"
@@ -108,7 +107,7 @@ class Server:
                 "description": "Example output of the genz anonymizer."
             }
             return jsonify(response), 200
-######################            
+######################
 ###################### Add a new REST endpoint (POST /genz)
         @self.app.route("/genz", methods=["POST"])
         #def genz():
